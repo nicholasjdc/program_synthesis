@@ -37,15 +37,15 @@ def findSolution(inputs, outputs, depthCap, currDepth, currString, validNums):
 			#if for all inputs the awnser is equivalent to something already seen, then reset tempstring and continue
 
 			results = evaluateSolutions(inputs, tempString)
+			if results ==outputs:
+				print("FORMULA: "+ tempString)
 			if results in seenAnswers:
 				continue
 			seenAnswers.append(results)
-			if results ==outputs:
-				return tempString
+			
 
-			sol = findSolution(inputs, outputs, depthCap, currDepth+1, tempString, validNums)
-			if sol:
-				return sol	
+
+			findSolution(inputs, outputs, depthCap, currDepth+1, tempString, validNums)
 	
 #input:: str[], operation:: str
 def evaluateSolutions(input, operation):
@@ -55,8 +55,7 @@ def evaluateSolutions(input, operation):
 		result = eval(newOperation)
 		evalList.append(str(result))
 	return evalList
-
-def main():
+def findFunction():
 	print('DEPTH CAP: ')
 	depthCap = int(input())
 	print('WIDTH: ')
@@ -67,11 +66,12 @@ def main():
 	print('EXAMPLES (e.g. \'2->11,3->14\'): ')
 	examples= input()
 	ioList = extractInputsOutputs(examples)
-	output = findSolution(ioList[0],ioList[1],depthCap,0,'input', validNums)
-	if output:
-		print("FORMULA: "+ output)
-	else:
-		print("NO ANSWER FOUND")
+	findSolution(ioList[0],ioList[1],depthCap,0,'input', validNums)
+	print("End of Found Formulas")
 
+def main():
+	while(True):
+		findFunction()
+	
 if __name__ == "__main__":
 	main()

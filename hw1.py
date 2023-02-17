@@ -1,5 +1,9 @@
-#input: num->num, num->num etc..
-# ex: 2-> 11, 3->14   --- (input+2)*3 - 1
+#input: 
+#DEPTH CAP: number(e.g. '5')
+#WIDTH: number(e.g. '5')
+#EXAMPLES: list(e.g. '2->11,3->15')
+#output:
+#Either-- FORMULA: formula(e.g. ((input+1)*2)) ) -- NO ANSWER FOUND
 #Input Parameters: input examples, depth (number of operations), 
 #width (valid numbers for operations)
 #Now we prune based on equivalency

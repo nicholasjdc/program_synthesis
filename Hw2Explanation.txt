@@ -1,0 +1,6 @@
+In Hw2 I implemented bottom up search in a recursive model
+using "seenAnswers" variable as a way of eliminating equivalent solutions.
+More specifically, during each iteration the result of the new function is 
+checked to see if is in "seenAnswers". If so, that version of the function is 
+skipped. If not, the that function is then added to seenAnswers, tested, and expanded.
+

@@ -1,11 +1,13 @@
-import math
-
 #input: num->num, num->num etc..
 # ex: 2-> 11, 3->14   --- (input+2)*3 - 1
 #Input Parameters: input examples, depth (number of operations), 
 #width (valid numbers for operations)
+#Now we prune based on equivalency
 validOperations = ['+','-','*','/']
+additiveOps = ['+','-']
+multiplicativeOps =['*','/']
 
+seenAnswers = []
 def extractInputsOutputs(examples):
 	exampleList = examples.split(',')
 	ioList =[]
@@ -20,42 +22,52 @@ def extractInputsOutputs(examples):
 	return ioList
 #inputs:: str[], outputs::str[], depthCap::int, currDepth::int, currString::string, width::int
 #make width an outer function, pass valid nums to inner function
-def findSolution(inputs, outputs, depthCap, currDepth, currString, width):
-	validNums = []
-	print(currString)
-	print(currDepth)
+def findSolution(inputs, outputs, depthCap, currDepth, currString, validNums):
 	if currDepth >= depthCap:
-		return ''
-	tempString = '(' + currString
-	for i in range(1, width+1):
-		validNums.append(str(i)) 
-	
+		return ''	
 	for op in validOperations:
 		for num in validNums:
+			tempString = '(' + currString
 			tempString += op
 			tempString +=num +')' 
-			if(validateSolutions(inputs, outputs, tempString)):
+			#if for all inputs the awnser is equivalent to something already seen, then reset tempstring and continue
+
+			results = evaluateSolutions(inputs, tempString)
+			if results in seenAnswers:
+				continue
+			seenAnswers.append(results)
+			if results ==outputs:
 				return tempString
 
-			sol = findSolution(inputs, outputs, depthCap, currDepth+1, tempString, width)
+			sol = findSolution(inputs, outputs, depthCap, currDepth+1, tempString, validNums)
 			if sol:
-				print(sol)
-				return sol
-			tempString = '(' + currString
-#input:: str[], output::str[], operation:: str
-def validateSolutions(input, output, operation):
+				return sol	
+	
+#input:: str[], operation:: str
+def evaluateSolutions(input, operation):
+	evalList = []
 	for i in range(len(input)):
 		newOperation = operation.replace("input", input[i])
 		result = eval(newOperation)
-		if result != int(output[i]):
-			return False
-	return True
-print('DEPTH CAP: ')
-depthCap = input()
-print('WIDTH: ')
-width = input()
-print('EXAMPLES (e.g. \'2->11,3->14\'): ')
-examples= input()
-ioList = extractInputsOutputs(examples)
-output = findSolution(ioList[0],ioList[1],5,0,'input', 5)
-print("FORMULA: "+ output)
+		evalList.append(str(result))
+	return evalList
+
+def main():
+	print('DEPTH CAP: ')
+	depthCap = int(input())
+	print('WIDTH: ')
+	width = int(input())
+	validNums =[]
+	for i in range(1, width+1):
+			validNums.append(str(i)) 
+	print('EXAMPLES (e.g. \'2->11,3->14\'): ')
+	examples= input()
+	ioList = extractInputsOutputs(examples)
+	output = findSolution(ioList[0],ioList[1],depthCap,0,'input', validNums)
+	if output:
+		print("FORMULA: "+ output)
+	else:
+		print("NO ANSWER FOUND")
+
+if __name__ == "__main__":
+	main()

@@ -3,7 +3,7 @@
 #WIDTH: number(e.g. '5')
 #EXAMPLES: list(e.g. '2->11,3->15')
 #output:
-#Either-- FORMULA: formula(e.g. ((input+1)*2)) ) -- NO ANSWER FOUND
+#FORMULA: formula(e.g. ((input+1)*2))
 #Input Parameters: input examples, depth (number of operations), 
 #width (valid numbers for operations)
 #Now we prune based on equivalency
@@ -39,12 +39,12 @@ def findSolution(inputs, outputs, depthCap, currDepth, currString, validNums):
 			results = evaluateSolutions(inputs, tempString)
 			if results ==outputs:
 				print("FORMULA: "+ tempString)
+
 			if results in seenAnswers:
 				continue
-			seenAnswers.append(results)
+			else:
+				seenAnswers.append(results)
 			
-
-
 			findSolution(inputs, outputs, depthCap, currDepth+1, tempString, validNums)
 	
 #input:: str[], operation:: str
@@ -55,6 +55,7 @@ def evaluateSolutions(input, operation):
 		result = eval(newOperation)
 		evalList.append(str(result))
 	return evalList
+
 def findFunction():
 	print('DEPTH CAP: ')
 	depthCap = int(input())
